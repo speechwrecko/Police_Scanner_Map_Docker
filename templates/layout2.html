@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset=utf-8/>
+    <title>A simple map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet'/>
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet'/>
+
+    <style>
+      body {
+      background: #404040;
+      color: #f8f8f8;
+      font: 500 20px/26px 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /**
+     * The page is split between map and sidebar - the sidebar gets 1/3, map
+     * gets 2/3 of the page. You can adjust this to your personal liking.
+     */
+    .sidebar {
+      width: 20%;
+      font-size: 14px;
+      position: absolute; /**/
+    }
+
+    .map {
+      border-left: 1px solid #fff;
+      position: absolute;
+      left: 20%;
+      width: 80%;
+      top: 0;
+      bottom: 0;
+    }
+
+    .pad2 {
+      padding: 20px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+#snackbar0 {
+    position: absolute;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 80%;
+    min-height: 125px;
+    max-height: 125px;
+    margin-left: 25px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 300px;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+#snackbar1 {
+position: absolute;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 80%;
+    min-height: 125px;
+    max-height: 125px;
+    margin-left: 25px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 450px;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+#snackbar2 {
+position: absolute;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 80%;
+    min-height: 125px;
+    max-height: 125px;
+    margin-left: 25px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 600px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    }
+
+#snackbar3 {
+position: absolute;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 80%;
+    min-height: 125px;
+    max-height: 125px;
+    margin-left: 25px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 750px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    }
+
+#snackbar4 {
+position: absolute;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 80%;
+    min-height: 125px;
+    max-height: 125px;
+    margin-left: 25px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 900px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    }
+
+#snackbar0.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar1.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar2.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar3.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar4.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {left: 0; opacity: 0;}
+    to {left: 25px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {left: 0; opacity: 0;}
+    to {left: 25px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {left: 25px; opacity: 1;}
+    to {left: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {left: 25px; opacity: 1;}
+    to {left: 0; opacity: 0;}
+}
+
+
+hr {
+  background-color: #ffffff;
+}
+
+
+    </style>
+
+</head>
+
+<body>
+<div class='sidebar pad2'><h2>Police Scanner Command Center</h2>
+    <p></p>
+    <hr>
+    <h3>Control Panel</h3>
+    <p></p>
+
+    <div id='controls'>
+        <p></p>
+        <button id="scanneron" style="height:30px;width:150px">Start Scanner</button>
+        <button id="scanneroff" style="height:30px;width:150px">Stop Scanner</button>
+        </br></br>
+        Select a Geoparser:
+        <select id="geoparser" style="height:30px;width:125px">
+            <option value="google">Google</option>
+            <option value="wit" selected="selected">Wit.ai</option>
+        </select>
+    </div>
+
+    <p></p>
+
+
+    <div id='snackbars'>
+        <div id="snackbar0"></div>
+        <div id="snackbar1"></div>
+        <div id="snackbar2"></div>
+        <div id="snackbar3"></div>
+        <div id="snackbar4"></div>
+    </div>
+
+</div>
+
+<div id='map' class='map pad2'>Map</div>
+<script>
+var val = {{value|safe}}
+L.mapbox.accessToken = 'pk.eyJ1Ijoic3BlZWNod3JlY2tvIiwiYSI6ImNqZG1iNHMxNTBrNHgzM285d2h1bHNuNHkifQ.FjSUm4op4twmz8EDETL9vw';
+var map = L.mapbox.map('map', 'mapbox.streets')
+    .setView([45.52345, -122.67621], 13).featureLayer.setGeoJSON(val);
+
+L.mapbox.featureLayer(val, {
+    pointToLayer: function(feature, latlon) {
+        // L.circleMarker() draws a circle with fixed radius in pixels.
+        // To draw a circle overlay with a radius in meters, use L.circle()
+        return L.circle(latlon, {radius: 1610});
+    }
+}).addTo(map);
+
+var asset_markers = [];
+map.eachLayer(function(marker) { markers.push(marker); });
+
+</script>
+</body>
+</html>
+

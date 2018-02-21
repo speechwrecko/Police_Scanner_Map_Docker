@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Google API Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <style>
+           #loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <p></p>
+    <button id="scanneron">Start Scanner</button>
+    <button id="scanneroff">Stop Scanner</button>
+    <select id="geoparser">
+        <option value="google">Google</option>
+        <option value="wit" selected = "selected">Wit.ai</option>
+    </select>
+    <p></p>
+    <div id="transcript"></div>
+    <div id="audio">
+        <audio id=audio1 type=audio/mp3></audio>
+    </div>
+
+    <p></p>
+    <div style="display:none;" id="loader"></div>
+    <div id="image"></div>
+</body>
+</html>

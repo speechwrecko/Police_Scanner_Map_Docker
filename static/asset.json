@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.625336, 45.568069]
+      },
+      "properties": {
+        "title": "Apogee Landscapes LLC - Main Office",
+        "description": "3706 NE Holman St, Portland, OR 97211",
+        "marker-color": "#00FF00",
+        "marker-size": "large",
+        "marker-symbol": "star"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.600009, 45.495019]
+      },
+      "properties": {
+        "title": "Apogee Landscapes LLC - Work Shop",
+        "description": "16120 SE Bush St, Portland, OR 97206",
+        "marker-color": "#00FF00",
+        "marker-size": "large",
+        "marker-symbol": "star"
+      }
+    }
+  ]
+}
