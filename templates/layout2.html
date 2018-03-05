@@ -49,6 +49,27 @@
       box-sizing: border-box;
     }
 
+#alertbox {
+    position: relative;  /**/
+    visibility: hidden;
+    /*min-width: 400px;
+    max-width: 400px;*/
+    width: 15%;
+    min-height: 125px;
+    max-height: 125px;
+    margin: 0 auto; /**/
+    background-color: #ff0000;
+    color: #fff;
+    text-align: left;
+    border-radius: 25px;
+    padding: 16px;
+    /*position: fixed;*/
+    z-index: 1;
+    top: 10px;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
 #snackbar0 {
     position: absolute;  /**/
     visibility: hidden;
@@ -154,6 +175,12 @@ position: absolute;  /**/
     white-space: pre-wrap;
     }
 
+#alertbox.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
 #snackbar0.show {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -246,7 +273,10 @@ hr {
 
 </div>
 
-<div id='map' class='map pad2'>Map</div>
+<div id='map' class='map pad2'>Map
+    <div id="alertbox"></div>
+</div>
+
 <script>
 var val = {{value|safe}}
 L.mapbox.accessToken = 'pk.eyJ1Ijoic3BlZWNod3JlY2tvIiwiYSI6ImNqZG1iNHMxNTBrNHgzM285d2h1bHNuNHkifQ.FjSUm4op4twmz8EDETL9vw';

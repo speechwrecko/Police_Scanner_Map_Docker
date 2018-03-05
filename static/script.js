@@ -14,7 +14,13 @@ $(document).ready(function() {
                 L.mapbox.featureLayer(data.map_markers[i]).addTo(map);
 
                 //Calculate distance from asset marker to new scanner markers.  If in radius pop alert
-                var dis1 = ((asset_markers[0].getLatLng()).distanceTo([data.map_markers[i].geometry.coordinates[1], data.map_markers[i].geometry.coordinates[0]])).toFixed(0);
+                var dis = ((asset_markers[0].getLatLng()).distanceTo([data.map_markers[i].geometry.coordinates[1], data.map_markers[i].geometry.coordinates[0]]));
+                if (dis > -1600 && dis < 1600){
+                    var y = document.getElementById("alertbox");
+                    y.innerHTML = "<p>" + "WARNING: There is a police activity near one of your assets" + "</p>" ;
+                    y.className = "show";
+                    setDelay(y)
+                }
 
                 var x = document.getElementById("snackbar"+i.toString());
                 x.innerHTML = "<p>" + JSON.stringify(data.map_markers[i].properties.description) + "</br>" + JSON.stringify(data.map_markers[i].properties.title) + "</br>" + "</p>" ;
