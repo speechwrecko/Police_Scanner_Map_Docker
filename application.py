@@ -1,8 +1,10 @@
-import imghdr
 import io
 import os
 import time
 import json
+import uuid
+import datetime
+from database import database
 
 import pydub
 import requests
@@ -33,6 +35,14 @@ geoparse_url = 'https://geoparser.io/api/geoparser'
 # amount of audio to fetch on each call to scanner
 max_time = 15
 
+
+db = None
+# Check if it is a windows machine for correct path
+if os.name == 'nt':
+    db = database('DB\pdscanner.db')
+# Otherwise assume linux
+else:
+    db = database('DB/pdscanner.db')
 
 # main application route - renders main page
 @application.route("/", methods=["GET"])
@@ -199,6 +209,12 @@ def transcribe_file(speech_file, sample_rate, parser):
         if bool(address) and lat is not None:
             my_point = Point((float(long), float(lat)))
             my_feature = Feature(geometry=my_point, properties={'title': 'Geo Location: {}'.format(address),'description': 'Transcript: {}'.format(result.alternatives[0].transcript), 'marker-size': 'large', 'marker-color': '#FF0000','marker-symbol': 'police'})
+
+            # Insert record into DB
+            row = [str(uuid.uuid4()), float(long), float(lat), 'Geo Location: {}'.format(address), 'Transcript: {}'.format(result.alternatives[0].transcript), str(datetime.datetime.now())]
+            db.InsertRow(tablename='security_events', row=row)
+            #use this line to temp export the table for debugging
+            #db.ExportCSV(tablename='security_events')
 
             # store lat long as marker coordinates for map
             marker_coordinates.append(my_feature)

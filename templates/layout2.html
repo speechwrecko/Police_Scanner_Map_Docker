@@ -177,8 +177,8 @@ position: absolute;  /**/
 
 #alertbox.show {
     visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    -webkit-animation: alert_fadein 0.5s, alert_fadeout 0.5s 2.5s;
+    animation: alert_fadein 0.5s, alert_fadeout 0.5s 2.5s;
 }
 
 #snackbar0.show {
@@ -231,6 +231,26 @@ position: absolute;  /**/
     to {left: 0; opacity: 0;}
 }
 
+@-webkit-keyframes alert_fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 10px; opacity: 1;}
+}
+
+@keyframes alert_fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 10px; opacity: 1;}
+}
+
+@-webkit-keyframes alert_fadeout {
+    from {top: 10px; opacity: 1;}
+    to {top: 0; opacity: 0;}
+}
+
+@keyframes alert_fadeout {
+    from {top: 10px; opacity: 1;}
+    to {top: 0; opacity: 0;}
+}
+
 
 hr {
   background-color: #ffffff;
@@ -258,6 +278,13 @@ hr {
             <option value="google">Google</option>
             <option value="wit" selected="selected">Wit.ai</option>
         </select>
+        </br></br>
+        <em>View Historical Data:</em><br>
+        Enter a start date:<br>
+        <input type="date" name="start_date"><br><br>
+        Enter an end date:<br>
+        <input type="date" name="end_date" ><br><br>
+        <button id="submit" style="height:30px;width:150px">Submit</button>
     </div>
 
     <p></p>
