@@ -55,6 +55,22 @@ def retreive():
 
     return render_template('layout2.html', value=assets)
 
+# primary application function to load historical markers
+@application.route("/sendRequest/history", methods=["GET", "POST"])
+def history():
+    application.logger.info(request.args.get("start"))
+    application.logger.info(request.args.get("end"))
+    param1 = 'event_time >= ' + '"' + request.args.get("start") + '"'
+    param2 = 'event_time <= ' + '"' + request.args.get("end") + '"'
+    results = db.GetRows('security_events', param1, param2)
+    historical_markers = []
+
+    for row in results:
+        my_feature = Feature(geometry=Point( (row[1], row[2]) ), properties={'title': row[3],
+                                                        'description': row[4], 'marker-size': 'large',
+                                                        'marker-color': '#FF0000', 'marker-symbol': 'police'})
+        historical_markers.append(my_feature)
+    return jsonify(map_markers = historical_markers)
 
 # primary application function to fetch scanner data and map
 @application.route("/sendRequest/scanner", methods=["GET", "POST"])

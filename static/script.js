@@ -66,6 +66,17 @@ $(document).ready(function() {
     //document.getElementById("audio1").pause();
   });
 
+  $("#submit").click(function() {
+    var start_date = document.getElementById("sdate").value;
+    var end_date = document.getElementById("edate").value;
+    var historyReq = $.get("/sendRequest/history", { start: start_date, end: end_date });
+    historyReq.done(function(data) {
+        for (i = 0; i < data.map_markers.length; i++) {
+                L.mapbox.featureLayer(data.map_markers[i]).addTo(map);
+        }
+     });
+  });
+
 
 });
 

@@ -13,6 +13,12 @@ class database:
         self.db.commit()
         return
 
+    def GetRows(self, tablename, query_param1, query_param2):
+        cursor2 = self.db.cursor()
+        cursor2.execute(f'SELECT * FROM {tablename} WHERE {query_param1} AND {query_param2}')
+        rows = cursor2.fetchall()
+        return rows
+
 
     def ExportCSV(self, tablename):
         csv_cursor = self.db.cursor()
