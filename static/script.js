@@ -77,6 +77,12 @@ $(document).ready(function() {
      });
   });
 
+  $("#clear").click(function() {
+    map.eachLayer(function (layer) {
+    map.removeLayer(layer);
+    });
+  });
+
 
 });
 

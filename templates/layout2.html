@@ -58,7 +58,7 @@
     min-height: 125px;
     max-height: 125px;
     margin: 0 auto; /**/
-    background-color: #ff0000;
+    background: rgba(255,0,0,0.5);
     color: #fff;
     text-align: left;
     border-radius: 25px;
@@ -71,107 +71,102 @@
 }
 
 #snackbar0 {
-    position: absolute;  /**/
+    position: absolute;
     visibility: hidden;
-    /*min-width: 400px;
-    max-width: 400px;*/
-    width: 80%;
+    width: 18%;
     min-height: 125px;
     max-height: 125px;
-    margin-left: 25px;
-    background-color: #333;
+    margin: 0 auto;
+    /*background-color: #333;*/
+    background: rgba(51,51,51, 0.5);
     color: #fff;
     text-align: left;
     border-radius: 2px;
     padding: 16px;
-    /*position: fixed;*/
     z-index: 1;
-    top: 300px;
-    font-size: 14px;
+    bottom: 10px;
+    left: 1%;
+    font-size: 12px;
     white-space: pre-wrap;
 }
 
 #snackbar1 {
-position: absolute;  /**/
+    position: absolute;
     visibility: hidden;
-    /*min-width: 400px;
-    max-width: 400px;*/
-    width: 80%;
+    width: 18%;
     min-height: 125px;
     max-height: 125px;
-    margin-left: 25px;
-    background-color: #333;
+    margin: 0 auto;
+    /*background-color: #333;*/
+    background: rgba(51,51,51, 0.5);
     color: #fff;
     text-align: left;
     border-radius: 2px;
     padding: 16px;
-    /*position: fixed;*/
     z-index: 1;
-    top: 450px;
-    font-size: 14px;
+    bottom: 10px;
+    left: 21%;
+    font-size: 12px;
     white-space: pre-wrap;
 }
 
 #snackbar2 {
-position: absolute;  /**/
+    position: absolute;
     visibility: hidden;
-    /*min-width: 400px;
-    max-width: 400px;*/
-    width: 80%;
+    width: 18%;
     min-height: 125px;
     max-height: 125px;
-    margin-left: 25px;
-    background-color: #333;
+    margin: 0 auto;
+    /*background-color: #333;*/
+    background: rgba(51,51,51, 0.5);
     color: #fff;
     text-align: left;
     border-radius: 2px;
     padding: 16px;
-    /*position: fixed;*/
     z-index: 1;
-    top: 600px;
-    font-size: 14px;
+    bottom: 10px;
+    left: 41%;
+    font-size: 12px;
     white-space: pre-wrap;
-    }
+}
 
 #snackbar3 {
-position: absolute;  /**/
+    position: absolute;
     visibility: hidden;
-    /*min-width: 400px;
-    max-width: 400px;*/
-    width: 80%;
+    width: 18%;
     min-height: 125px;
     max-height: 125px;
-    margin-left: 25px;
-    background-color: #333;
+    margin: 0 auto;
+    /*background-color: #333;*/
+    background: rgba(51,51,51, 0.5);
     color: #fff;
     text-align: left;
     border-radius: 2px;
     padding: 16px;
-    /*position: fixed;*/
     z-index: 1;
-    top: 750px;
-    font-size: 14px;
+    bottom: 10px;
+    left: 61%;
+    font-size: 12px;
     white-space: pre-wrap;
-    }
+}
 
 #snackbar4 {
-position: absolute;  /**/
+    position: absolute;
     visibility: hidden;
-    /*min-width: 400px;
-    max-width: 400px;*/
-    width: 80%;
+    width: 18%;
     min-height: 125px;
     max-height: 125px;
-    margin-left: 25px;
-    background-color: #333;
+    margin: 0 auto;
+     /*background-color: #333;*/
+    background: rgba(51,51,51, 0.5);
     color: #fff;
     text-align: left;
     border-radius: 2px;
     padding: 16px;
-    /*position: fixed;*/
     z-index: 1;
-    top: 900px;
-    font-size: 14px;
+    bottom: 10px;
+    left: 81%;
+    font-size: 12px;
     white-space: pre-wrap;
     }
 
@@ -212,23 +207,23 @@ position: absolute;  /**/
 }
 
 @-webkit-keyframes fadein {
-    from {left: 0; opacity: 0;}
-    to {left: 25px; opacity: 1;}
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 10px; opacity: 1;}
 }
 
 @keyframes fadein {
-    from {left: 0; opacity: 0;}
-    to {left: 25px; opacity: 1;}
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 10px; opacity: 1;}
 }
 
 @-webkit-keyframes fadeout {
-    from {left: 25px; opacity: 1;}
-    to {left: 0; opacity: 0;}
+    from {bottom: 10px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
 }
 
 @keyframes fadeout {
-    from {left: 25px; opacity: 1;}
-    to {left: 0; opacity: 0;}
+    from {bottom: 10px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
 }
 
 @-webkit-keyframes alert_fadein {
@@ -287,10 +282,16 @@ input { display: inline; }
         Enter an end date:<br>
         <input id="edate" type="date" name="end_date" ><br><br>
         <button id="submit" style="height:30px;width:150px">Submit</button>
+        <button id="clear" style="height:30px;width:150px">Clear</button>
     </div>
 
     <p></p>
 
+
+</div>
+
+<div id='map' class='map pad2'>Map
+    <div id="alertbox"></div>
 
     <div id='snackbars'>
         <div id="snackbar0"></div>
@@ -299,11 +300,6 @@ input { display: inline; }
         <div id="snackbar3"></div>
         <div id="snackbar4"></div>
     </div>
-
-</div>
-
-<div id='map' class='map pad2'>Map
-    <div id="alertbox"></div>
 </div>
 
 <script>
