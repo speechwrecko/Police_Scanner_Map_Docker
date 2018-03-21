@@ -28,6 +28,34 @@
         "marker-size": "large",
         "marker-symbol": "star"
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.303193, 47.655777]
+      },
+      "properties": {
+        "title": "Stabilitas Headquarters",
+        "description": "Fluke Hall - University of Washington, 4000 Mason Rd, Seattle, WA 98195",
+        "marker-color": "#00FF00",
+        "marker-size": "large",
+        "marker-symbol": "star"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.335028, 47.611301]
+      },
+      "properties": {
+        "title": "Marchex Headquarters",
+        "description": "520 Pike Street, Seattle, WA 98101",
+        "marker-color": "#00FF00",
+        "marker-size": "large",
+        "marker-symbol": "star"
+      }
     }
   ]
 }

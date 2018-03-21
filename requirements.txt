@@ -34,6 +34,7 @@ googlemaps==2.5.1
 grpc-google-iam-v1==0.11.3
 grpcio==1.6.0
 Jinja2==2.9.6
+logger==1.4
 oauth2client==3.0.0
 proto-google-cloud-datastore-v1==0.90.4
 proto-google-cloud-error-reporting-v1beta1==0.15.3

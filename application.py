@@ -20,6 +20,9 @@ from oauth2client.client import GoogleCredentials
 
 from wit import Wit
 
+import logging
+import logging.handlers
+
 wit_ai_token = '3KGJYXXQKXQ7X6FQYOOSDOSFMLAEZFLZ'
 
 application = Flask(__name__)
@@ -29,37 +32,67 @@ application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 photos_url = "https://maps.googleapis.com/maps/api/place/photo"
 map_url = "https://maps.googleapis.com/maps/api/staticmap"
-stream_url = 'http://relay.broadcastify.com:80/37813088?nocache=3792733'
 geoparse_url = 'https://geoparser.io/api/geoparser'
+
+#audio feeds
+portland_stream_url = 'http://relay.broadcastify.com:80/37813088?nocache=3792733'
+miami_stream_url = 'http://audio2.broadcastify.com/67440258?nocache=6895748'
+chicago_stream_url = 'http://audio4.broadcastify.com/il_chicago_police2?nocache=8444144'
+seattle_stream_url = 'http://audio10.broadcastify.com/ctvjymw580k2?nocache=9035869'
+
+#global defaults for city
+stream_url = portland_stream_url
+city = "Portland, OR"
 
 # amount of audio to fetch on each call to scanner
 max_time = 15
 
-
 db = None
 # Check if it is a windows machine for correct path
 if os.name == 'nt':
-    db = database('DB\pdscanner.db')
+    db = database('db\pdscanner.db')
 # Otherwise assume linux
 else:
-    db = database('DB/pdscanner.db')
+    db = database('static/pdscanner.db')
+
+logger = None
 
 # main application route - renders main page
 @application.route("/", methods=["GET"])
 def retreive():
+    global logger
+    if os.name != 'nt':
+        logger = logging.getLogger('myLogger')
+        logger.setLevel(logging.INFO)
+        # add handler to the logger
+        handler = logging.handlers.SysLogHandler('/dev/log')
+        # add syslog format to the handler
+        formatter = logging.Formatter(
+            'Python: { "loggerName":"%(name)s", "timestamp":"%(asctime)s", "pathName":"%(pathname)s", "logRecordCreationTime":"%(created)f", "functionName":"%(funcName)s", "levelNo":"%(levelno)s", "lineNo":"%(lineno)d", "time":"%(msecs)d", "levelName":"%(levelname)s", "message":"%(message)s"}')
+        handler.formatter = formatter
+        logger.addHandler(handler)
+
     with open('static/asset.json', 'rb') as f:
         data = json.load(f)
         assets = json.dumps(data)
-
-    application.logger.info(assets)
+        if os.name == 'nt':
+            application.logger.info(assets)
+        else:
+            logger.info("Assets loaded")
+            logger.info(assets)
 
     return render_template('layout2.html', value=assets)
 
 # primary application function to load historical markers
 @application.route("/sendRequest/history", methods=["GET", "POST"])
 def history():
-    application.logger.info(request.args.get("start"))
-    application.logger.info(request.args.get("end"))
+    if os.name == 'nt':
+        application.logger.info(request.args.get("start"))
+        application.logger.info(request.args.get("end"))
+    else:
+        logger.info(request.args.get("start"))
+        logger.info(request.args.get("end"))
+
     param1 = 'event_time >= ' + '"' + request.args.get("start") + '"'
     param2 = 'event_time <= ' + '"' + request.args.get("end") + '"'
     results = db.GetRows('security_events', param1, param2)
@@ -72,13 +105,45 @@ def history():
         historical_markers.append(my_feature)
     return jsonify(map_markers = historical_markers)
 
+# primary application function to load historical markers
+@application.route("/sendRequest/newlocation", methods=["GET", "POST"])
+def newlocation():
+    global stream_url
+    global city
+
+    if os.name == 'nt':
+        application.logger.info(request.args.get("location"))
+    else:
+        logger.info(request.args.get("location"))
+
+    param1 = request.args.get("location")
+    if param1 == "portland-or":
+        stream_url = portland_stream_url
+        city = "Portland, OR"
+    elif param1 == "miami-fl":
+        stream_url = miami_stream_url
+        city = "Miami, FL"
+    elif param1 == "chicago-il":
+        stream_url = chicago_stream_url
+        city = "Chicago, IL"
+    elif param1 == "seattle-wa":
+        stream_url = chicago_stream_url
+        city = "Seattle, WA"
+    return "ok"
+
 # primary application function to fetch scanner data and map
 @application.route("/sendRequest/scanner", methods=["GET", "POST"])
 def scan():
-    application.logger.info('entering scanner function')
+    if os.name == 'nt':
+        application.logger.info("entering scanner function")
+    else:
+        logger.info("entering scanner function")
 
     selected_parser = request.args.get("option")
-    application.logger.info('selected parser is %s' % selected_parser)
+    if os.name == 'nt':
+        application.logger.info('selected parser is %s' % selected_parser)
+    else:
+        logger.info('selected parser is %s' % selected_parser)
 
     # delete any intermediary files
     if os.path.isfile("stream.mp3"):
@@ -153,7 +218,7 @@ def generate_map_image(marker_coordinates):
 # function to geo parse
 def geo_parse(transcribed_text, parser):
     if parser == 'google':
-        query = transcribed_text + ", " + "Portland, OR"
+        query = transcribed_text + ", " + city
         search_payload = {"key": key, "query": query}
         search_req = requests.get(search_url, params=search_payload)
         search_json = search_req.json()
@@ -170,7 +235,7 @@ def geo_parse(transcribed_text, parser):
         resp = client.message(transcribed_text)
 
         if bool(resp["entities"]):
-            query = resp["entities"]["location"][0]["value"] + ", " + "Portland, OR"
+            query = resp["entities"]["location"][0]["value"] + ", " + city
             search_payload = {"key": key, "query": query}
             search_req = requests.get(search_url, params=search_payload)
             search_json = search_req.json()

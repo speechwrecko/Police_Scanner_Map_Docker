@@ -83,6 +83,28 @@ $(document).ready(function() {
     });
   });
 
+  $( "#city" ).change(function() {
+    document.getElementById("scanneroff").click();
+    var city = document.getElementById("city").value;
+    $.get("/sendRequest/newlocation", { location: city });
+    switch(city) {
+        case "portland-or":
+            map._map.panTo([45.52345, -122.67621]);
+            break;
+        case "miami-fl":
+            map._map.panTo([25.761681, -80.191788]);
+            break;
+        case "chicago-il":
+            map._map.panTo([41.881832, -87.623177]);
+            break;
+        case "seattle-wa":
+            map._map.panTo([47.608013, -122.335167]);
+            break;
+        default:
+            break;
+        }
+    });
+
 
 });
 
