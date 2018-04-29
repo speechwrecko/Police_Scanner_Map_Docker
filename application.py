@@ -35,10 +35,10 @@ map_url = "https://maps.googleapis.com/maps/api/staticmap"
 geoparse_url = 'https://geoparser.io/api/geoparser'
 
 #audio feeds
-portland_stream_url = 'http://relay.broadcastify.com:80/37813088?nocache=3792733'
-miami_stream_url = 'http://audio2.broadcastify.com/67440258?nocache=6895748'
-chicago_stream_url = 'http://audio4.broadcastify.com/il_chicago_police2?nocache=8444144'
-seattle_stream_url = 'http://audio10.broadcastify.com/ctvjymw580k2?nocache=9035869'
+portland_stream_url = 'http://relay.broadcastify.com:80/003cw4xgf86s9vm'
+miami_stream_url = 'http://relay.broadcastify.com:80/7mszyc1f4rvnh08'
+chicago_stream_url = 'http://relay.broadcastify.com:80/s1kntwdfzxmr8v6'
+seattle_stream_url = 'http://relay.broadcastify.com:80/jm165kzs0vc47bt'
 
 #global defaults for city
 stream_url = portland_stream_url
@@ -62,15 +62,18 @@ logger = None
 def retreive():
     global logger
     if os.name != 'nt':
-        logger = logging.getLogger('myLogger')
-        logger.setLevel(logging.INFO)
-        # add handler to the logger
-        handler = logging.handlers.SysLogHandler('/dev/log')
-        # add syslog format to the handler
-        formatter = logging.Formatter(
-            'Python: { "loggerName":"%(name)s", "timestamp":"%(asctime)s", "pathName":"%(pathname)s", "logRecordCreationTime":"%(created)f", "functionName":"%(funcName)s", "levelNo":"%(levelno)s", "lineNo":"%(lineno)d", "time":"%(msecs)d", "levelName":"%(levelname)s", "message":"%(message)s"}')
-        handler.formatter = formatter
-        logger.addHandler(handler)
+        try:
+            logger = logging.getLogger('myLogger')
+            logger.setLevel(logging.INFO)
+            # add handler to the logger
+            handler = logging.handlers.SysLogHandler('/dev/log')
+            # add syslog format to the handler
+            formatter = logging.Formatter(
+                'Python: { "loggerName":"%(name)s", "timestamp":"%(asctime)s", "pathName":"%(pathname)s", "logRecordCreationTime":"%(created)f", "functionName":"%(funcName)s", "levelNo":"%(levelno)s", "lineNo":"%(lineno)d", "time":"%(msecs)d", "levelName":"%(levelname)s", "message":"%(message)s"}')
+            handler.formatter = formatter
+            logger.addHandler(handler)
+        except:
+            pass
 
     with open('static/asset.json', 'rb') as f:
         data = json.load(f)
@@ -78,8 +81,11 @@ def retreive():
         if os.name == 'nt':
             application.logger.info(assets)
         else:
-            logger.info("Assets loaded")
-            logger.info(assets)
+            try:
+                logger.info("Assets loaded")
+                logger.info(assets)
+            except:
+                pass
 
     return render_template('layout2.html', value=assets)
 
@@ -90,8 +96,12 @@ def history():
         application.logger.info(request.args.get("start"))
         application.logger.info(request.args.get("end"))
     else:
-        logger.info(request.args.get("start"))
-        logger.info(request.args.get("end"))
+        try:
+            logger.info(request.args.get("start"))
+            logger.info(request.args.get("end"))
+        except:
+            pass
+
 
     param1 = 'event_time >= ' + '"' + request.args.get("start") + '"'
     param2 = 'event_time <= ' + '"' + request.args.get("end") + '"'
@@ -114,7 +124,10 @@ def newlocation():
     if os.name == 'nt':
         application.logger.info(request.args.get("location"))
     else:
-        logger.info(request.args.get("location"))
+        try:
+            logger.info(request.args.get("location"))
+        except:
+            pass
 
     param1 = request.args.get("location")
     if param1 == "portland-or":
@@ -137,13 +150,19 @@ def scan():
     if os.name == 'nt':
         application.logger.info("entering scanner function")
     else:
-        logger.info("entering scanner function")
+        try:
+            logger.info("entering scanner function")
+        except:
+            pass
 
     selected_parser = request.args.get("option")
     if os.name == 'nt':
         application.logger.info('selected parser is %s' % selected_parser)
     else:
-        logger.info('selected parser is %s' % selected_parser)
+        try:
+            logger.info('selected parser is %s' % selected_parser)
+        except:
+            pass
 
     # delete any intermediary files
     if os.path.isfile("stream.mp3"):
@@ -164,13 +183,23 @@ def scan():
                 if (time.time() - start_time) > max_time:
                     break
         except Exception:
+            application.logger.info('stream is not happening')
             pass
 
     # transcode the audio from MP3 to WAV for Google Speech API
     application.logger.info('trancode audio to WAV')
-    sound = pydub.AudioSegment.from_mp3("static/stream.mp3")
-    sound.export("static/stream.wav", format="wav")
+    try:
+        sound = pydub.AudioSegment.from_mp3("static/stream.mp3")
+    except Exception as ex:
+        application.logger.info(ex)
+        pass
+
     application.logger.info('finished transcoding audio to WAV')
+    try:
+        sound.export("static/stream.wav", format="wav")
+    except Exception as ex:
+        application.logger.info(ex)
+        pass
 
     application.logger.info('transcribe audio')
     utterances, marker_coordinates = transcribe_file("static/stream.wav", sound.frame_rate, selected_parser)
@@ -324,7 +353,7 @@ def add_header(response):
 
 
 if __name__ == "__main__":
-    application.run(debug=True, threaded=True)
+    application.run(debug=True, host= '0.0.0.0', threaded=True)
 
     # def gen(r):
     #     time.sleep(10)
