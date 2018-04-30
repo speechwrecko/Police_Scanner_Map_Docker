@@ -60,6 +60,9 @@ logger = None
 # main application route - renders main page
 @application.route("/", methods=["GET"])
 def retreive():
+
+    # this is a branch test
+    
     global logger
     if os.name != 'nt':
         try:
@@ -80,6 +83,7 @@ def retreive():
         assets = json.dumps(data)
         if os.name == 'nt':
             application.logger.info(assets)
+            application.logger.info("you created a branch")
         else:
             try:
                 logger.info("Assets loaded")
